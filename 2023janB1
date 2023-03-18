@@ -1,0 +1,84 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int nxtint() {
+    int a;
+    cin >> a;
+    return a;
+}
+char nxtchar() {
+    char c;
+    cin >> c;
+    return c;
+}
+int n = nxtint();
+string cows; 
+vector<int> lst = vector<int>(n); 
+
+
+int main() {
+    
+	cin >> cows;
+
+    for(int i = 0; i < n; i ++ ) {
+        lst[i] = nxtint();
+    }
+
+    char two = 'G'; 
+    if(cows[0] == 'G') {
+        two = 'H';
+    }
+    
+
+    bool lead = true;
+
+    int idx2 = 0; 
+    for(int i = 0; i < n; i ++) {
+        if(cows[i] == two) {
+            idx2 = i;
+            break;
+        }
+    }
+
+
+    
+    
+    for(int i = lst[idx2] ; i < n; i ++) {
+        
+        if(cows[i] == two) {
+            lead = false;
+        }
+    }
+    
+    
+    int count = 0;
+
+
+    for(int i = 1; i < idx2 ; i ++) {
+        if(lst[i] - 1 >= idx2 ) {
+            count ++;
+        }
+    }
+    bool leadother = true;
+    
+    for(int i = lst[0]; i < n; i ++) {
+        if(cows[i] == cows[0]) {
+            leadother = false;
+        }
+    }
+    
+    if(lst[0] - 1 >= idx2 ||leadother) {
+        count++;
+    }
+    
+    
+    if(lead) {
+        cout<< count <<endl;
+    }else {
+        cout<< 0 <<endl;
+    }
+    
+    
+}
