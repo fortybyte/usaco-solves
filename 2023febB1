@@ -1,0 +1,29 @@
+// Source: https://usaco.guide/general/io
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+int main() {
+	ll n,t;
+	cin >> n >> t;
+	vector<pair<ll,ll>> bales = vector<pair<ll,ll>>(n);
+
+	
+	for (ll i = 0; i < n; i ++) cin >> bales[i].first >> bales[i].second;
+	
+	bales.push_back({t+1,0}); // so bessie can eat on the last day
+	
+	ll total =0;
+	ll last_delivery = 0;
+	ll remaining = 0;
+	for (auto p : bales) {
+		//loop through deliveries
+		total += p.second; // prefix sum without arr
+		remaining -= p.first - last_delivery; // bales eaten
+		last_delivery = p.first; // set last delivery
+		remaining = max(remaining, (ll) 0) + p.second; // set remianing bales max current remaining takes care of no bales case , + p.second is adding the delivered bales
+
+	}
+	//the total number subtracted by the remianing is the number of bales bessie ate
+	cout << total-remaining << endl;
+}
