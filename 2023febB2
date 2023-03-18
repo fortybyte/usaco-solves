@@ -1,0 +1,97 @@
+
+
+#include <bits/stdc++.h>
+using namespace std;
+bool diffrence(int i, int j, vector<vector<char>>& stamp, vector<vector<char>>& desire) {
+	for (int a = 0; a < stamp.size(); a ++) {
+		for (int b = 0; b < stamp.size(); b ++) {
+			if (stamp[a][b] == '*' && desire[i+a][j+b] == '.') return false;
+		}
+	}
+	return true;
+}
+void stamping(bool p, int i, int j, vector<vector<char>>& ans,vector<vector<char>>& stamp) {
+	if (!p) return;
+	for (int a = 0; a < stamp.size(); a ++) {
+		for (int b = 0; b < stamp.size(); b ++) {
+			if (stamp[a][b] == '*') ans[i+a][j+b] = '*';
+		}
+	}
+}
+void pos (vector<vector<char>>& stamp, vector<vector<char>>& desire,vector<vector<char>>& ans) {
+	for (int i = 0; i +stamp.size()-1 < desire.size(); i ++) {
+		for (int j = 0; j + stamp.size()-1 < desire.size(); j ++) {
+			stamping(diffrence(i,j,stamp,desire),i,j,ans,stamp);
+		}
+	}
+	
+}
+vector<vector<char>> rotate(vector<vector<char>>& stamp) {
+	vector<vector<char>> ans = vector<vector<char>>(stamp.size(),vector<char>(stamp.size()));
+	for (int i = 0; i < stamp.size(); i ++) {
+		for (int j = 0; j < stamp.size(); j ++) {
+			ans[j][stamp.size()-1-i] = stamp[i][j];
+		}
+	}
+	return ans;
+}
+
+int main() {
+	int w; cin >> w;
+	while (w--) {
+		int n; cin >> n;
+		vector<vector<char>> desire (n,vector<char>(n));
+		for (int i = 0; i < n; i ++) {
+			for (int j = 0; j < n; j ++) {
+				cin >> desire[i][j];
+			}
+		}
+		int k; cin >> k;
+		vector<vector<char>> stamp (k,vector<char>(k));
+		for (int i = 0; i < k; i ++) {
+			for (int j = 0; j < k; j ++) {
+				cin >> stamp[i][j];
+			}
+		}
+		vector<vector<char>> ans = vector<vector<char>>(n,vector<char>(n,'.'));
+		for (int i = 0; i < 4; i ++) {
+			pos(stamp,desire,ans);
+			stamp = rotate(stamp);
+			// for (auto v : stamp) {
+			// 	for (auto c : v) {
+			// 		cout << c;
+			// 	}
+			// 	cout << endl;
+			// }
+			// cout << endl;
+		}
+		bool t = true;
+		for (int i = 0; i < n; i ++) {
+			if (!t) break;
+			for (int j = 0; j < n; j ++) {
+				if (desire[i][j] != ans[i][j]) {
+					t = false;
+					break;
+				}
+
+			}
+		}
+		if (t) {
+			cout << "YES" << endl;
+		} else {
+			cout << "NO" << endl;
+		}
+		// cout << n << k << endl;
+		// for (auto v : desire) {
+		// 	for (auto c : v) cout << c;
+		// 	cout << endl;
+		// } cout << endl;
+		// for (auto v : stamp) {
+		// 	for (auto c : v) cout << c;
+		// 	cout << endl;
+		// }
+
+	}
+	return 0;
+}
+
