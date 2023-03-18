@@ -1,0 +1,110 @@
+#include <bits/stdc++.h>
+using namespace std;
+int nxtint() {
+    int a;
+    cin >> a;
+    return a;
+}
+char nxtchar() {
+    char c;
+    cin >> c;
+    return c;
+}
+
+
+void dfs(const vector<int>& input, vector<vector<int>>& res, int start, vector<int>& tmp) {
+        res.push_back(tmp);
+        
+        for (int i = start; i < input.size(); i ++) {
+			
+            tmp.push_back(input[i]);
+            
+            dfs(input,res,i+1,tmp);
+            tmp.pop_back();
+            
+        }
+}
+bool check (vector<int> temps, vector<vector<int>> airs, vector<int> usedidx) {
+	for (auto i: usedidx) {
+		
+		int sub = airs[i][2];
+		for (int j = airs[i][0]; j <= airs[i][1]; j ++) {
+			temps[j] -= sub;			
+		}
+		
+	}
+	for (int j = 0; j < temps.size(); j ++) {
+		if (temps[j] > 0) {
+			return false;
+		}
+	}
+	return true;
+}
+int n = nxtint();
+int m = nxtint();
+
+vector<vector<int>> cows = vector<vector<int>>(n,vector<int>(3));
+vector<vector<int>> airs = vector<vector<int>>(m,vector<int>(4));
+vector<int> tmps = vector<int>(101);
+
+
+
+int main() {
+	for (int i = 0; i < n; i ++) {
+		cows[i][0] = nxtint(); // start
+		cows[i][1] = nxtint(); // end
+		cows[i][2] = nxtint(); // decrease
+	}
+	for (int i = 0; i < m; i ++) {
+		airs[i][0] = nxtint(); // start
+		airs[i][1] = nxtint(); // end
+		airs[i][2] = nxtint(); // cost
+		airs[i][3] = nxtint(); // decrease
+	}
+
+	vector<int> airidx = vector<int>(m);
+	for (int i = 0; i < airs.size(); i ++) {
+		airidx[i] = i;
+		// cout << airidx[i] << ",";
+	}
+	// cout << endl;
+
+	for (int i = 0; i < n; i ++) {
+		for (int j = cows[i][0]; j <= cows[i][1]; j ++) {
+
+			tmps[j] = max(cows[i][2],tmps[j]);
+		}
+	}
+	vector<vector<int>> res;
+	vector<int> tmp; 
+
+	dfs(airidx,res,0,tmp);
+	int cost = INT32_MAX;
+
+	for (int i = 0; i < res.size(); i ++) {
+		bool work = true;
+
+		if (!check(tmps,airs,res[i])) work = false;
+
+		if (work == true) {
+			int curcost = 0;
+			for (int j = 0; j < res[i].size(); j ++) {
+				
+				curcost += airs[res[i][j]][3];
+			}
+			cost = min(cost,curcost);
+		}
+	}
+
+	// for (int i = 0; i < res.size(); i ++) {
+	// 	for (int j = 0; j < res[i].size(); j ++) {
+	// 		cout << res[i][j];
+	// 	}
+	// 	cout << endl;
+	// }
+	
+
+
+	cout << cost << endl;
+	return 0;
+}
