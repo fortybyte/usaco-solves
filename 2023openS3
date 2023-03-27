@@ -23,7 +23,7 @@ ll b(const std::string &S, ll start) {
 
     return accumulatedcount;
 }
-ll total(const string& S) {
+ll total(const string&  S) {
     ll count = 0;
     vector<ll> preb ((ll)S.length(),0);
     
