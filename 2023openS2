@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+ll b(const std::string &S, ll start) {
+    std::string target = "bessie";
+    ll target_len = target.length();
+    ll target_idx = 0;
+    ll count = 0;
+    ll accumulatedcount = 0; 
+    for (ll i = start; i < (ll)S.length(); i ++) {
+        
+        if (S[i] == target[target_idx]) {
+            ++target_idx;
+
+            if (target_idx == target_len) {
+                ++count;
+                target_idx = 0;
+            }
+        }
+        //cout << c << count << endl;
+        accumulatedcount+= count;
+    }
+
+    return accumulatedcount;
+}
+ll total(const string& S) {
+    ll count = 0;
+    vector<ll> preb ((ll)S.length(),0);
+    
+    for (ll i = (ll)S.length()-4; i >= 0; i --) {
+        if (S[i] == 'b') {
+            preb[i] = b(S,i);
+            count += preb[i];
+            
+        } else {
+            preb[i] = preb[i+1];
+            count += preb[i];
+        }
+        
+    }
+    return count;
+}
+int main() {
+    string S;
+    std:: cin >> S;
+    std::cout << total(S) << std::endl;  
+
+    return 0;
+}
